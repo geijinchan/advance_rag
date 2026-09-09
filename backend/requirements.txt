@@ -10,7 +10,7 @@ Pillow>=10.0
 python-multipart>=0.0.9
 
 # Optional — neural embeddings (Part B upgrade; falls back to feature hashing)
-# sentence-transformers>=3.0
+sentence-transformers>=3.0
 
 # Optional — OCR fallback for /ask-image when no VLM is served
 pytesseract>=0.3.10   # requires the tesseract binary (see Dockerfile)
