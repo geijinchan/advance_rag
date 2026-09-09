@@ -177,7 +177,7 @@ type AskResponse = {
   retries: number;
   fallback: boolean;
   latency_ms: number;
-  serving_mode: "vllm" | "simulation";
+  serving_mode: "vllm" | "simulation" | "groq";
   request_id: string;
   session_id: string;
   effective_question: string;
@@ -193,7 +193,7 @@ type AskResponse = {
 type HealthResponse = {
   status: "ok" | "degraded";
   serving: {
-    mode: "vllm" | "simulation";
+    mode: "vllm" | "simulation" | "groq";
     model: string;
     vllm_base_url: string;
     vllm_reachable: boolean;
@@ -873,7 +873,7 @@ function traceRerank(trace: TraceEntry[]): RerankInfo | null {
 }
 
 function RerankChip({ info, servingMode }: { info: RerankInfo; servingMode: string }) {
-  const modeLabel = servingMode === "vllm" ? "llm scoring" : "lexical surrogate";
+  const modeLabel = servingMode === "vllm" || servingMode === "groq" ? "llm scoring" : "lexical surrogate";
   const tips = [
     `reranked: ${info.reranked} candidates`,
     `reorders: ${info.reorders}`,
@@ -5021,7 +5021,7 @@ export default function Home() {
   }, [imgFile, imgQuestion, toast]);
 
   const mode = health?.serving.mode ?? "simulation";
-  const live = mode === "vllm";
+  const live = mode === "vllm" || mode === "groq";
   // Merged golden-set size (base + promoted user cases) for the Eval tab.
   const evalTotal = casesData?.stats.total ?? 16;
 

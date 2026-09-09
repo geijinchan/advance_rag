@@ -44,7 +44,7 @@ class ImageQAService:
         pil.load()
         image_info = self._basic_info(pil, filename)
 
-        if self.models.vllm_available:
+        if self.models.active_mode != "simulation":
             answer = await self.models.brain.answer_image(
                 question, base64.b64encode(image_bytes).decode(), mime=self._mime(pil)
             )

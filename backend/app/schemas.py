@@ -65,7 +65,7 @@ class AskResponse(BaseModel):
     retries: int = 0
     fallback: bool = Field(False, description="True when the honest fallback path was taken")
     latency_ms: float = 0.0
-    serving_mode: Literal["vllm", "simulation"] = "simulation"
+    serving_mode: Literal["vllm", "simulation", "groq"] = "simulation"
     request_id: str = ""
     session_id: str = Field("", description="Conversation session this turn belongs to")
     effective_question: str = Field("", description="Query actually executed (follow-up resolved)")
@@ -123,7 +123,7 @@ class CorpusResponse(BaseModel):
 
 
 class ServingInfo(BaseModel):
-    mode: Literal["vllm", "simulation"]
+    mode: Literal["vllm", "simulation", "groq"]
     model: str
     vision_model: str
     vllm_base_url: str
@@ -147,7 +147,7 @@ class BenchmarkRequest(BaseModel):
 
 
 class BenchmarkResponse(BaseModel):
-    mode: Literal["vllm", "simulation"]
+    mode: Literal["vllm", "simulation", "groq"]
     concurrency: int
     total_requests: int
     successful_requests: int

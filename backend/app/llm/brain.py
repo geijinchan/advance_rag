@@ -17,14 +17,15 @@ logger = logging.getLogger(__name__)
 _ROUTER_SYSTEM = """You are a query router for a corporate document-assistant.
 Classify the user's question into exactly one route:
 - "document": the question might be answerable from internal product manuals,
-  policies, datasheets, firmware notes, or maintenance docs.
+  policies, datasheets, firmware notes, maintenance docs, resumes, or portfolios.
+  Route any requests for contact info, emails, phone numbers, or details about people here.
 - "chitchat": greetings, thanks, or meta questions about the assistant.
 - "out_of_scope": general world knowledge or clearly unrelated topics
   (sports, politics, news, celebrities, weather...).
 
 Internal corpus topics: X100/X200/X300 industrial controllers, S200/S350
 sensors, warranty & RMA policy, firmware releases, safety compliance,
-maintenance, networking/fieldbus, troubleshooting, deployment.
+maintenance, networking/fieldbus, troubleshooting, deployment, portfolios, and contact info.
 
 Respond ONLY with minified JSON: {"route":"...","confidence":0.0-1.0,"reason":"..."}"""
 
@@ -161,9 +162,11 @@ class LLMBrain:
         try:
             async for event in self.backend.chat_stream(messages, temperature=0.1):
                 if event.token:
-                    yield event.token, event.ttft_ms
+                    yield event.token, event.get("ttft_ms")
         except Exception as exc:  # noqa: BLE001 — degrade to non-streaming
             logger.warning("chat_stream failed (%s) — falling back to full completion", exc)
+            full_text = await self.backend.chat(messages, temperature=0.1)
+            yield full_text, None
 
     # ---------------------------------------------------------- verifier
     async def verify_answer(self, answer: str, contexts: list[dict]) -> tuple[str, float, list[str]]:

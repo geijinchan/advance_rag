@@ -96,7 +96,7 @@ class AppState:
         # service hot-swap (lexical surrogate in simulation, LLM in vLLM mode).
         self.reranker = CrossEncoderReranker(
             n=settings.rerank_n,
-            backend_provider=lambda: self.models.backend if self.models.vllm_available else None,
+            backend_provider=lambda: self.models.backend if self.models.active_mode != "simulation" else None,
         )
         self.retriever = HybridRetriever(self.store, rrf_k=settings.rrf_k,
                                          reranker=self.reranker)
@@ -370,7 +370,7 @@ async def health(refresh: bool = Query(False, description="Re-probe the vLLM ser
     st = _state()
     if refresh:
         await st.models.refresh()
-    reachable = st.models.vllm_available
+    reachable = st.models.active_mode != "simulation"
     corpus = st.store.stats()
     return HealthResponse(
         status="ok" if corpus["total_chunks"] > 0 or reachable else "degraded",
