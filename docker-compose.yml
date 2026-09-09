@@ -1,0 +1,39 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - BACKEND_URL=http://backend:3003
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - rag-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
+    env_file:
+      - .env
+    volumes:
+      - index-data:/srv/data
+      # Mount corpus so the backend can ingest if needed
+      - ./corpus:/srv/corpus:ro
+    restart: unless-stopped
+    networks:
+      - rag-network
+
+networks:
+  rag-network:
+
+volumes:
+  index-data:
