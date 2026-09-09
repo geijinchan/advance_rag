@@ -1,0 +1,87 @@
+================================================================================
+  INDUSTRIOS DYNAMICS LTD.
+  RMA (RETURN MERCHANDISE AUTHORIZATION) - FREQUENTLY ASKED QUESTIONS
+  Document ID: DOC-RMA-FAQ-001 | Revision 1.8 | Effective date: 2024-02-01
+  Applies to: X-Series controllers (X100/X200/X300), S-Series sensors (S200/S350)
+================================================================================
+
+
+Q1. HOW DO I REQUEST AN RMA NUMBER?
+A1. Submit a request through the Customer Portal (Support > RMA > New Request)
+    or e-mail support@industrios-dynamics.com with the following information:
+    device serial number (format IOS-XX-NNNNNN), purchase order or invoice
+    number, delivery date, firmware version, and a fault description of at
+    least two sentences. RMA numbers are issued within 4 business hours and
+    are valid for 30 days; unused numbers expire automatically.
+
+Q2. HOW LONG DOES RMA EVALUATION TAKE?
+A2. Evaluation takes 48 hours from receipt of the unit at our Rotterdam
+    facility (Vondelingenweg 601, 3196 KK Rotterdam, The Netherlands). The
+    48-hour clock starts when the package is scanned at goods-in, so use a
+    trackable carrier. You receive an evaluation report by e-mail stating the
+    confirmed fault, the warranty decision, and - for out-of-warranty units -
+    a repair quote. Units that arrive without an RMA number are quarantined
+    and the evaluation clock does not start until the number is matched.
+
+Q3. HOW LONG DOES THE REPAIR TAKE?
+A3. Repairs are completed within 5-7 working days after evaluation for all
+    products whose spare parts are stocked in Rotterdam (every model shipped
+    since 2019). Safety-certified X300 repairs can take up to 10 working days
+    because the SIL2 certificate chain requires a documented final test and
+    sign-off by our compliance engineer. Every repair returns with a 90-day
+    warranty on the repair itself, independent of the original warranty term.
+
+Q4. WHICH DAMAGES ARE NOT COVERED BY WARRANTY?
+A4. The main exclusions are: water damage on devices that are not rated IP68
+    (the X100 is IP54 and the X200 is IP65); unauthorized repair or opening
+    of sealed housings; overvoltage or lightning events beyond the supply
+    tolerance printed in the manual; wear parts beyond their rated life
+    (relay contacts 100,000 cycles, RTC batteries 5 years); and damage from
+    installation contrary to the manuals. The full list is in the Warranty
+    Policy, document DOC-WAR-POL-001, section 4.
+
+Q5. MY UNIT FAILED STRAIGHT AFTER DELIVERY. IS THERE A DOA RULE?
+A5. Yes. Units that fail within 14 days of delivery qualify as dead-on-arrival
+    (DOA). Report the failure within that window and we ship an advance
+    replacement before your defective unit is returned. DOA handling is only
+    available for devices bought new from IndustriOS Dynamics or an
+    authorised distributor.
+
+Q6. HOW SHOULD I PACKAGE THE UNIT?
+A6. Use the original IndustriOS packaging where possible. Otherwise double-
+    box the unit with 50 mm cushioning on all sides, put the controller or
+    sensor in an ESD bag, and include a printed copy of the RMA confirmation.
+    Damage caused by customer packaging is not covered by warranty - see
+    question Q4 and Warranty Policy section 4.
+
+Q7. WHO PAYS THE FREIGHT?
+A7. In-warranty EU customers receive a prepaid return label by e-mail with
+    the RMA number. Customers outside the EU pay outbound freight and are
+    reimbursed within 14 days when a warranty defect is confirmed. Out-of-
+    warranty customers pay freight in both directions.
+
+Q8. CAN I GET A LOANER UNIT DURING THE REPAIR?
+A8. We keep a loaner pool of X200 and X300 controllers for a maximum of 21
+    days, subject to availability. Request the loaner in the RMA request.
+    The 150 EUR administration fee is waived for customers with a confirmed
+    in-warranty repair. Loaner units must be returned with the same firmware
+    version they shipped with; your project is restored to your own unit.
+
+Q9. WHAT HAPPENS TO MY DATA AND CONFIGURATION?
+A9. Units are wiped to a factory state as part of every repair - this is a
+    GDPR requirement and a safety measure. You MUST back up your project,
+    parameters, and calibration offsets before shipping; see the Maintenance
+    Schedule (DOC-MNT-SC-003, section 4) for the backup procedure. IndustriOS
+    Dynamics does not recover customer data from returned units.
+
+Q10. THE REPAIR IS TAKING TOO LONG - HOW DO I ESCALATE?
+A10. If five business days pass after evaluation without a status update,
+     reply to any RMA e-mail with the word ESCALATE in the subject line. The
+     duty manager responds within 4 business hours. The standard escalation
+     path is: L1 site technician, then L2 IndustriOS support, then L3
+     engineering in Rotterdam (48-72 hours for defect analysis); see the
+     Troubleshooting Guide (DOC-TSH-FC-006) for the criteria at each level.
+
+================================================================================
+  Contact: support@industrios-dynamics.com | +31 10 555 0142 (Mon-Fri CET)
+================================================================================
