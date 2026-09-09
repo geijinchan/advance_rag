@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     """
 
     model_config = SettingsConfigDict(
-        env_file=(BASE_DIR / ".env"),
+        env_file=(BASE_DIR.parent / ".env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -44,6 +44,11 @@ class Settings(BaseSettings):
     vllm_request_timeout: float = Field(90.0, alias="VLLM_REQUEST_TIMEOUT")
     vllm_max_tokens: int = Field(768, alias="VLLM_MAX_TOKENS")
     vllm_temperature: float = Field(0.1, alias="VLLM_TEMPERATURE")
+
+    # --- Groq serving (Fallback) --------------------------------------------
+    groq_api_key: str | None = Field(None, alias="GROQ_API_KEY", description="Groq API Key used if local vLLM is unreachable.")
+    groq_model_name: str = Field("llama-3.3-70b-versatile", alias="GROQ_MODEL_NAME")
+    groq_vision_model_name: str = Field("llama-3.2-11b-vision-preview", alias="GROQ_VISION_MODEL_NAME")
 
     # --- Embeddings & retrieval (Part B) ------------------------------------
     embedding_dim: int = Field(384, alias="EMBEDDING_DIM")

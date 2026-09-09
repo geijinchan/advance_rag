@@ -174,8 +174,6 @@ async function startService() {
           ...process.env,
           PYTHONUNBUFFERED: "1",
         },
-        // On Windows, use shell to handle .exe resolution from PATH
-        shell: process.platform === "win32",
       }
     );
 

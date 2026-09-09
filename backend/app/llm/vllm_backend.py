@@ -26,17 +26,28 @@ _BACKOFF_BASE = 0.4
 
 
 class VLLMBackend:
-    def __init__(self) -> None:
-        self.name = f"vllm:{settings.vllm_model_name}"
+    def __init__(
+        self,
+        base_url: str | None = None,
+        api_key: str | None = None,
+        model_name: str | None = None,
+        vision_model_name: str | None = None,
+    ) -> None:
+        self.base_url = base_url or settings.vllm_base_url
+        self.api_key = api_key or settings.vllm_api_key
+        self.model_name = model_name or settings.vllm_model_name
+        self.vision_model_name = vision_model_name or settings.vllm_vision_model_name
+
+        self.name = f"vllm:{self.model_name}"
         self.mode = "vllm"
         self._client = httpx.AsyncClient(
-            base_url=settings.vllm_base_url,
-            headers={"Authorization": f"Bearer {settings.vllm_api_key}"},
+            base_url=self.base_url,
+            headers={"Authorization": f"Bearer {self.api_key}"},
             timeout=httpx.Timeout(connect=5.0, read=settings.vllm_request_timeout, write=10.0, pool=5.0),
         )
         self._vision_client = httpx.AsyncClient(
-            base_url=settings.vllm_base_url,
-            headers={"Authorization": f"Bearer {settings.vllm_api_key}"},
+            base_url=self.base_url,
+            headers={"Authorization": f"Bearer {self.api_key}"},
             timeout=httpx.Timeout(connect=5.0, read=settings.vllm_request_timeout, write=10.0, pool=5.0),
         )
         self._requests = 0
@@ -54,7 +65,7 @@ class VLLMBackend:
         stream: bool,
     ) -> dict[str, Any]:
         return {
-            "model": model or settings.vllm_model_name,
+            "model": model or self.model_name,
             "messages": [dict(m) for m in messages],
             "max_tokens": max_tokens or settings.vllm_max_tokens,
             "temperature": settings.vllm_temperature if temperature is None else temperature,
@@ -147,7 +158,7 @@ class VLLMBackend:
         async def call() -> str:
             resp = await self._client.post(
                 "/chat/completions",
-                json=self._payload(messages, model=settings.vllm_vision_model_name,
+                json=self._payload(messages, model=self.vision_model_name,
                                    max_tokens=None, temperature=None, stream=False),
             )
             resp.raise_for_status()
