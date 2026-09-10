@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced RAG · Hybrid Retrieval</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🔎</span>
+      <div>
+        <h1>Advanced RAG</h1>
+        <p>Hybrid retrieval · BM25 + Semantic · RAG-Fusion · MMR · LLM rerank · self-correcting</p>
+      </div>
+    </div>
+    <div id="status" class="status status--wait">
+      <span class="dot"></span><span id="statusText">connecting…</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ============ LEFT: documents ============ -->
+    <aside class="sidebar">
+      <section class="card">
+        <h2><span class="step-num">1</span> Documents</h2>
+
+        <label id="dropzone" class="dropzone" for="fileInput">
+          <div class="dz-icon">⬆</div>
+          <div class="dz-main">Drop a PDF here or <u>browse</u></div>
+          <div class="dz-sub">chunked → embedded → BM25 + FAISS indexed</div>
+        </label>
+        <input type="file" id="fileInput" accept="application/pdf" hidden />
+
+        <div id="uploadStatus" class="upload-status" hidden></div>
+
+        <div class="doc-head">
+          <span>Indexed sources</span>
+          <button id="resetBtn" class="link-btn" title="Remove every indexed document">clear all</button>
+        </div>
+        <ul id="docList" class="doc-list">
+          <li class="doc-empty">No documents yet.</li>
+        </ul>
+      </section>
+
+      <section class="card legend">
+        <h2>Pipeline</h2>
+        <ol class="flow-legend" id="flowLegend"></ol>
+      </section>
+    </aside>
+
+    <!-- ============ RIGHT: ask + results ============ -->
+    <section class="content">
+      <section class="card ask-card">
+        <h2><span class="step-num">2</span> Ask a question</h2>
+        <textarea id="question" rows="3"
+          placeholder="e.g. What loss function does the model use, and why?"></textarea>
+        <div class="ask-row">
+          <span id="askHint" class="ask-hint">Upload a PDF first to enable querying.</span>
+          <button id="askBtn" class="primary" disabled>Ask</button>
+        </div>
+      </section>
+
+      <!-- live pipeline flow -->
+      <section class="card pipeline-card">
+        <div class="pipe-head">
+          <h2><span class="step-num">3</span> Pipeline flow</h2>
+          <span id="cycleBadge" class="cycle-badge" hidden></span>
+        </div>
+        <div id="pipeline" class="pipeline"></div>
+      </section>
+
+      <!-- answer -->
+      <section id="answerCard" class="card answer-card" hidden>
+        <div class="answer-head">
+          <h2>Answer</h2>
+          <div id="badges" class="badges"></div>
+        </div>
+        <div id="answer" class="answer-body"></div>
+
+        <h3 class="src-title">Sources <span id="srcCount" class="muted"></span></h3>
+        <ol id="sources" class="sources"></ol>
+      </section>
+
+      <!-- raw trace -->
+      <section id="traceCard" class="card trace-card" hidden>
+        <button id="traceToggle" class="trace-toggle">▸ Raw trace</button>
+        <pre id="trace" class="trace" hidden></pre>
+      </section>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
