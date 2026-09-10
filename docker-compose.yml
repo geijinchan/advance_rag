@@ -3,6 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        # Baked into the Next.js route manifest at build time (see Dockerfile).
+        BACKEND_URL: http://backend:3003
     ports:
       - "3000:3000"
     env_file:
@@ -24,10 +27,26 @@ services:
       - "3003:3003"
     env_file:
       - .env
+    environment:
+      # Persist the HuggingFace/sentence-transformers cache on a volume so the
+      # embedding model (BAAI/bge-base-en-v1.5) is downloaded once, not on
+      # every restart.
+      - HF_HOME=/srv/hf-cache
     volumes:
       - index-data:/srv/data
-      # Mount corpus so the backend can ingest if needed
-      - ./corpus:/srv/corpus:ro
+      # Mount corpus so the backend can ingest if needed.
+      # Corpus files live in backend/corpus, not the (empty) root corpus/.
+      - ./backend/corpus:/srv/corpus:ro
+      - hf-cache:/srv/hf-cache
+    # Override the image healthcheck: the first boot ingests the corpus, which
+    # downloads the embedding model and blocks startup. Give it a long
+    # start-period so it isn't killed mid-download.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:3003/health', timeout=4).status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 300s
+      retries: 5
     restart: unless-stopped
     networks:
       - rag-network
@@ -37,3 +56,4 @@ networks:
 
 volumes:
   index-data:
+  hf-cache:
